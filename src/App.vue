@@ -14,47 +14,79 @@
           transition="scale-transition"
           width="40"
         />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
       </div>
-
+      <span class="mr-2">카메라 테스트1</span>
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-main>
-      <HelloWorld/>
+      <router-view />
     </v-main>
+    <v-bottom-navigation
+      :value="value"
+      color="primary"
+      grow
+    >
+      <v-btn value="camera" @click="cameraURL()">
+        <span>카메라</span>
+        <v-icon>mdi-camera</v-icon>
+      </v-btn>
+
+      <v-btn value="gallery" @click="galleryURL()">
+        <span>앨범</span>
+        <v-icon>mdi-note</v-icon>
+      </v-btn>
+
+      <v-btn value="etc" @click="etcURL()">
+        <span>기타</span>
+        <v-icon>mdi-map-marker</v-icon>
+      </v-btn>
+      
+    </v-bottom-navigation>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import cordovaCameraFile from './services/cordova-cameraFile';
 
 export default {
   name: 'App',
 
   components: {
-    HelloWorld,
+    
   },
 
+
   data: () => ({
-    //
+    value: "camera"
   }),
+  methods: {
+      camera() {
+        cordovaCameraFile.toCamera();
+      },
+      gallery() {
+        cordovaCameraFile.toGallery();
+      },
+      cameraURL() {
+        this.$router.push("/").catch(()=>{});
+      },
+      galleryURL() {
+        this.$router.push("/gallery").catch(()=>{});
+      },
+      etcURL() {
+        this.$router.push("/etc").catch(()=>{});
+      }
+  }
 };
 </script>
+<style>
+.cameraButtonDiv {
+  position : relative;
+}
+.cameraButton {
+  position : absolute;
+  bottom : 0;
+  right : 0;
+}
+</style>
